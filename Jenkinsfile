@@ -10,7 +10,7 @@ pipeline {
        stage('Checkout') {
            steps {
                //checkout([$class: 'GitSCM', credentialsId: '1e2767da-313f-47ba-8a90-66205de0cea8', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ShivaliSKirdat/web_deploy']]])
-                 checkout(git branch: 'main', credentialsId: '1e2767da-313f-47ba-8a90-66205de0cea8', url: 'https://github.com/ShivaliSKirdat/web_deploy.git')
+                 git branch: 'main', credentialsId: '1e2767da-313f-47ba-8a90-66205de0cea8', url: 'https://github.com/ShivaliSKirdat/web_deploy.git'
            }
        }
        stage('Build') {
