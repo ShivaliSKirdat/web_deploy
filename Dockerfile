@@ -3,5 +3,5 @@ FROM python:3.9
 COPY . /app/
 #COPY main.py definition.py /app/
 WORKDIR /app
-RUN pip install flask pytest flake8 # This downloads all the dependencies
+RUN pip install flask pytest flake8 azure-identity azure-keyvault-secrets # This downloads all the dependencies
 CMD ["python", "main.py"]
