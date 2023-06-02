@@ -10,6 +10,7 @@ from modules.Login import Login
 from modules.Gallery import Gallery
 from modules.Photos import Photos
 from definition import *
+import config
 
 app = Flask(__name__)
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
@@ -38,7 +39,10 @@ def do_login():
     if request.method == "POST":
         user_name = request.form['username']
         password = request.form['password']
-
+        
+        print(config.DEMO_DB_USERNAME)
+        print(config.DEMO_DB_PASSWORD)
+        
         login_obj = Login()
         result = login_obj.login(user_name, password)
         print(result['type'])
