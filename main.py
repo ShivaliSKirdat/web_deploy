@@ -10,7 +10,8 @@ from modules.Login import Login
 from modules.Gallery import Gallery
 from modules.Photos import Photos
 from definition import *
-import config
+from azure.keyvault.secrets import SecretClient
+from azure.identity import DefaultAzureCredential
 
 app = Flask(__name__)
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
@@ -33,25 +34,56 @@ def index():
 
     return render_template("index.html")
 
+def get_secrets_from_keyvault():
+    vault_url = 'https://demo-web-key-vault.vault.azure.net/'  # Replace with your Key Vault URL
+
+    credential = DefaultAzureCredential()
+    secret_client = SecretClient(vault_url=vault_url, credential=credential)
+
+    username = secret_client.get_secret('admin').value
+    password = secret_client.get_secret('@Microsoft.KeyVault(SecretUri=https://demo-web-key-vault.vault.azure.net/secrets/admin/2a81d20f0195456da01101212990f85a)').value
+
+    return username, password
 
 @app.route('/login', methods=['POST'])
 def do_login():
-    if request.method == "POST":
-        user_name = request.form['username']
-        password = request.form['password']
-        
-        print(config.DEMO_DB_USERNAME)
-        print(config.DEMO_DB_PASSWORD)
-        
-        login_obj = Login()
-        result = login_obj.login(user_name, password)
-        print(result['type'])
+    # Get the username and password from the request
+    request_data = request.get_json()
+    input_username = request_data['username']
+    input_password = request_data['password']
 
-        if result['result']:
-            session['type'] = result['type']
+    # Retrieve the username and password from Azure Key Vault
+    secret_username, secret_password = get_secrets_from_keyvault()
 
-        response = {'success': result}
-        return json.dumps(response)
+    # Compare the input username and password with the secrets
+    if input_username == secret_username and input_password == secret_password:
+        # Successful login
+        return jsonify({'message': 'Login successful'})
+    else:
+        # Failed login
+        return jsonify({'message': 'Invalid credentials'})
+
+# Other routes and application logic here
+
+# if __name__ == '__main__':
+#     app.run()
+
+
+# @app.route('/login', methods=['POST'])
+# def do_login():
+#     if request.method == "POST":
+#         user_name = request.form['username']
+#         password = request.form['password']
+        
+#         login_obj = Login()
+#         result = login_obj.login(user_name, password)
+#         print(result['type'])
+
+#         if result['result']:
+#             session['type'] = result['type']
+
+#         response = {'success': result}
+#         return json.dumps(response)
 
 
 @app.route('/logout')
