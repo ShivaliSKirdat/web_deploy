@@ -41,7 +41,7 @@ def get_secrets_from_keyvault():
     secret_client = SecretClient(vault_url=vault_url, credential=credential)
 
     username = secret_client.get_secret('admin').value
-    password = secret_client.get_secret('@Microsoft.KeyVault(SecretUri=https://demo-web-key-vault.vault.azure.net/secrets/admin/2a81d20f0195456da01101212990f85a)').value
+    password = secret_client.get_secret('https://demo-web-key-vault.vault.azure.net/secrets/admin/2a81d20f0195456da01101212990f85a').value
 
     return username, password
 
