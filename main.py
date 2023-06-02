@@ -41,23 +41,23 @@ def get_secrets_from_keyvault():
     secret_client = SecretClient(vault_url=vault_url, credential=credential)
 
     username = secret_client.get_secret('admin').value
-    #password = secret_client.get_secret('https://demo-web-key-vault.vault.azure.net/secrets/admin/2a81d20f0195456da01101212990f85a').value
+    password = secret_client.get_secret('https://demo-web-key-vault.vault.azure.net/secrets/admin/2a81d20f0195456da01101212990f85a').value
 
-    return username #, password
+    return username, password
 
 @app.route('/login', methods=['POST'])
 def do_login():
     # Get the username and password from the request
     request_data = request.get_json()
     input_username = request_data['username']
-    #input_password = request_data['password']
+    input_password = request_data['password']
 
     # Retrieve the username and password from Azure Key Vault
-    #secret_username , secret_password = get_secrets_from_keyvault()
-    secret_username = get_secrets_from_keyvault()
+    secret_username , secret_password = get_secrets_from_keyvault()
+    #secret_username = get_secrets_from_keyvault()
     
     # Compare the input username and password with the secrets
-    if input_username == secret_username: #and input_password == secret_password:
+    if input_username == secret_username and input_password == secret_password:
         # Successful login
         return jsonify({'message': 'Login successful'})
     else:
