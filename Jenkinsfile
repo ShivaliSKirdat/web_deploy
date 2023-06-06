@@ -19,6 +19,17 @@ pipeline {
                sh 'docker image build -t $DOCKER_HUB_REPO:latest .'
            }
        }
+       stage('SonarQube Analysis') {
+          steps {
+            script {
+               def scannerHome = tool 'SonarQubeScanner' // Assuming you have configured SonarQube Scanner as a tool in Jenkins
+
+               withSonarQubeEnv('SonarQube Server') {
+               sh "${scannerHome}/bin/sonar-scanner"
+               }
+            }
+         }
+       }
     //    stage('Test') {
     //        steps {
     //            echo 'Testing..'
@@ -37,3 +48,10 @@ pipeline {
        }
    }
 }
+
+post {
+    always {
+      // Publish the SonarQube results as a post-build action
+      sonarQubeScan()
+    }
+  }
