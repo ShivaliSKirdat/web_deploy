@@ -49,9 +49,9 @@ pipeline {
    }
 }
 
-post {
-    always {
-      // Publish the SonarQube results as a post-build action
-      sonarQubeScan()
-    }
-  }
+// post {
+//     always {
+//       // Publish the SonarQube results as a post-build action
+//       sonarQubeScan()
+//     }
+//   }
