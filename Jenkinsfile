@@ -23,7 +23,6 @@ pipeline {
           steps {
             script {
                def scannerHome = tool 'SonarQube Scanner 4.7' // Assuming you have configured SonarQube Scanner as a tool in Jenkins
-               //def scannerHome = tool 'SonarQube Scanner for Jenkins'
                withSonarQubeEnv('web_deploy_sonarqube') {
                sh "${scannerHome}/bin/sonar-scanner"
                }
