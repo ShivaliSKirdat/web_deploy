@@ -30,7 +30,7 @@ pipeline {
             }
          }
        }
-    //    stage('Test') {
+    // .   stage('Test') {
     //        steps {
     //            echo 'Testing..'
     //            sh 'docker stop $CONTAINER_NAME || true'
