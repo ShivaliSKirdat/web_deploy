@@ -24,7 +24,7 @@ pipeline {
             script {
                def scannerHome = tool 'SonarScanner' // Assuming you have configured SonarQube Scanner as a tool in Jenkins
                //def scannerHome = tool 'SonarQube Scanner for Jenkins'
-               withSonarQubeEnv(installationName: 'web_deploy_sonarqube') {
+               withSonarQubeEnv('web_deploy_sonarqube') {
                sh "${scannerHome}/bin/sonar-scanner"
                }
             }
@@ -49,9 +49,9 @@ pipeline {
    }
 }
 
-// post {
-//     always {
-//       // Publish the SonarQube results as a post-build action
-//       sonarQubeScan()
-//     }
-//   }
+post {
+    always {
+      // Publish the SonarQube results as a post-build action
+      sonarQubeScan()
+    }
+  }
