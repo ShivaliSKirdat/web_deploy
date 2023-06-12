@@ -66,8 +66,8 @@ def index():
 #########################################################################################
 # Other routes and application logic here
 
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
 
 
 @app.route('/login', methods=['POST'])
